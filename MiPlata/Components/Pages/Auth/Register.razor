@@ -1,0 +1,35 @@
+﻿@page "/register"
+@inject CajeroService cajeroService
+@rendermode InteractiveServer
+@using MiPlata.Models
+
+
+<h3>Registro</h3>
+
+<input placeholder="Identificación" @bind="user.Identificacion" />
+<input placeholder="Nombre Completo" @bind="user.NombreCompleto" />
+<input placeholder="Celular" @bind="user.Celular" />
+<input placeholder="Usuario" @bind="user.Username" />
+<input type="password" placeholder="Contraseña" @bind="user.Password" />
+<input type="password" placeholder="Confirmar" @bind="confirm" />
+
+<button @onclick="Registrar">Registrar</button>
+
+<p>@mensaje</p>
+
+@code {
+    Usuario user = new Usuario();
+    string confirm;
+    string mensaje;
+
+    void Registrar()
+    {
+        if (user.Password != confirm)
+        {
+            mensaje = "Las contraseñas no coinciden";
+            return;
+        }
+
+        mensaje = cajeroService.Registrar(user);
+    }
+}

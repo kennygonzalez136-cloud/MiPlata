@@ -1,0 +1,73 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using MiPlata.Models
+@inject CajeroService cajeroService
+
+<h3>Login</h3>
+
+<input placeholder="Usuario" @bind="username" />
+<input type="password" placeholder="Contraseña" @bind="password" />
+
+<button @onclick="Ingresar">Ingresar</button>
+
+<p>@mensaje</p>
+<p>Intentos restantes: @intentos</p>
+
+@if (mostrarSeleccionCuenta)
+{
+    <div style="border:1px solid black; padding:10px; margin-top:10px;">
+        <h4>Selecciona el tipo de cuenta</h4>
+
+        <button @onclick='() => CrearCuenta("Ahorros")'>Ahorros</button>
+        <button @onclick='() => CrearCuenta("Corriente")'>Corriente</button>
+    </div>
+}
+
+@code {
+    // 🔹 Campos
+    private string username = "";
+    private string password = "";
+    private string mensaje = "";
+    private int intentos = 3;
+
+    private Usuario? usuarioLogeado;
+    private bool mostrarSeleccionCuenta = false;
+
+    // 🔹 LOGIN
+    private void Ingresar()
+    {
+        mensaje = "";
+        mostrarSeleccionCuenta = false;
+
+        var user = cajeroService.Login(username, password, out mensaje, out intentos);
+
+        if (user == null)
+            return;
+
+        usuarioLogeado = user;
+
+        bool tieneCuenta = cajeroService.TieneCuentas(user.Id);
+
+        if (!tieneCuenta)
+        {
+            mostrarSeleccionCuenta = true;
+            mensaje = "Debes crear una cuenta";
+        }
+        else
+        {
+            mensaje = $"Bienvenido {user.Username}";
+        }
+    }
+
+    // 🔹 CREAR CUENTA
+    private void CrearCuenta(string tipo)
+    {
+        if (usuarioLogeado == null)
+            return;
+
+        string resultado = cajeroService.CrearCuenta(usuarioLogeado.Id, tipo);
+
+        mensaje = resultado;
+        mostrarSeleccionCuenta = false;
+    }
+}
