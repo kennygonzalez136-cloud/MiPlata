@@ -1,0 +1,114 @@
+﻿@inject NavigationManager Navigation
+
+<nav class="bg-white/80 backdrop-blur-md border-b border-purple-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-2 group cursor-pointer">
+                <div class="bg-gradient-to-br from-purple-500 to-pink-500 p-2 rounded-2xl group-hover:scale-110 transition-transform">
+                    <span class="text-white text-xl">💳</span>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    YouthBank
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center gap-4">
+                @if (Variant == NavbarVariant.Home)
+                {
+                    <a href="/login" class="px-4 py-2 text-purple-700 hover:text-purple-900 font-medium transition-colors">
+                        Iniciar Sesión
+                    </a>
+                    <a href="/register" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg font-medium transition-all">
+                        Registrarse
+                    </a>
+                }
+                @if (Variant == NavbarVariant.Auth)
+                {
+                    <a href="/" class="px-4 py-2 text-purple-700 hover:text-purple-900 font-medium transition-colors">
+                        Volver al Inicio
+                    </a>
+                }
+                @if (Variant == NavbarVariant.Dashboard && !string.IsNullOrEmpty(UserName))
+                {
+                    <div class="flex items-center gap-4">
+                        <div class="bg-gradient-to-br from-purple-100 to-pink-100 px-4 py-2 rounded-full">
+                            <span class="text-purple-900 font-medium">👋 Hola, @UserName</span>
+                        </div>
+                        <button @onclick="OnLogoutClick"
+                                class="px-6 py-2 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-lg font-medium transition-all">
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button @onclick="ToggleMenu"
+                    class="md:hidden p-2 rounded-lg hover:bg-purple-100 transition-colors">
+                @if (isMenuOpen)
+                {
+                    <span class="text-2xl">✕</span>
+                }
+                else
+                {
+                    <span class="text-2xl">☰</span>
+                }
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        @if (isMenuOpen)
+        {
+            <div class="md:hidden py-4 space-y-2 border-t border-purple-200">
+                @if (Variant == NavbarVariant.Home)
+                {
+                    <a href="/login" class="block px-4 py-2 text-purple-700 hover:bg-purple-50 rounded-lg transition-colors">
+                        Iniciar Sesión
+                    </a>
+                    <a href="/register" class="block px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium text-center">
+                        Registrarse
+                    </a>
+                }
+                @if (Variant == NavbarVariant.Auth)
+                {
+                    <a href="/" class="block px-4 py-2 text-purple-700 hover:bg-purple-50 rounded-lg transition-colors">
+                        Volver al Inicio
+                    </a>
+                }
+                @if (Variant == NavbarVariant.Dashboard && !string.IsNullOrEmpty(UserName))
+                {
+                    <div class="bg-gradient-to-br from-purple-100 to-pink-100 px-4 py-3 rounded-lg mb-2">
+                        <span class="text-purple-900 font-medium">👋 Hola, @UserName</span>
+                    </div>
+                    <button @onclick="OnLogoutClick"
+                            class="w-full px-4 py-2 border-2 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-lg font-medium transition-all text-left">
+                        Cerrar Sesión
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</nav>
+
+@code {
+    [Parameter] public NavbarVariant Variant { get; set; } = NavbarVariant.Home;
+    [Parameter] public string? UserName { get; set; }
+    [Parameter] public EventCallback OnLogout { get; set; }
+
+    private bool isMenuOpen = false;
+
+    private void ToggleMenu()
+    {
+        isMenuOpen = !isMenuOpen;
+    }
+
+    private async Task OnLogoutClick()
+    {
+        if (OnLogout.HasDelegate)
+        {
+            await OnLogout.InvokeAsync();
+        }
+    }
+}

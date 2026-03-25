@@ -1,30 +1,57 @@
-﻿@page "/"
+﻿@page "/login"
 @rendermode InteractiveServer
 @using MiPlata.Models
 @inject CajeroService cajeroService
 
-<h3>Login</h3>
+<div class="container">
 
-<input placeholder="Usuario" @bind="username" />
-<input type="password" placeholder="Contraseña" @bind="password" />
+    <div class="login-card">
 
-<button @onclick="Ingresar">Ingresar</button>
+        <h2 class="title">💳 YouthBank</h2>
+        <p class="subtitle">Iniciar Sesión</p>
 
-<p>@mensaje</p>
-<p>Intentos restantes: @intentos</p>
+        <!-- Inputs -->
+        <div class="input-group">
+            <label>Usuario</label>
+            <input placeholder="Usuario" @bind="username" />
+        </div>
 
-@if (mostrarSeleccionCuenta)
-{
-    <div style="border:1px solid black; padding:10px; margin-top:10px;">
-        <h4>Selecciona el tipo de cuenta</h4>
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" placeholder="••••••••" @bind="password" />
+        </div>
 
-        <button @onclick='() => CrearCuenta("Ahorros")'>Ahorros</button>
-        <button @onclick='() => CrearCuenta("Corriente")'>Corriente</button>
+        <!-- Botón -->
+        <button class="btn" @onclick="Ingresar">Ingresar</button>
+
+        <!-- Mensaje -->
+        @if (!string.IsNullOrEmpty(mensaje))
+        {
+            <p class="message">@mensaje</p>
+        }
+
+        <p class="intentos">Intentos restantes: @intentos</p>
+
+        <!-- Selección de cuenta -->
+        @if (mostrarSeleccionCuenta)
+        {
+            <div class="cuenta-box">
+                <h4>Selecciona el tipo de cuenta</h4>
+
+                <button class="btn-sec" @onclick='() => CrearCuenta("Ahorros")'>
+                    Ahorros
+                </button>
+
+                <button class="btn-sec" @onclick='() => CrearCuenta("Corriente")'>
+                    Corriente
+                </button>
+            </div>
+        }
+
     </div>
-}
+</div>
 
 @code {
-    // 🔹 Campos
     private string username = "";
     private string password = "";
     private string mensaje = "";
@@ -33,7 +60,6 @@
     private Usuario? usuarioLogeado;
     private bool mostrarSeleccionCuenta = false;
 
-    // 🔹 LOGIN
     private void Ingresar()
     {
         mensaje = "";
@@ -59,7 +85,6 @@
         }
     }
 
-    // 🔹 CREAR CUENTA
     private void CrearCuenta(string tipo)
     {
         if (usuarioLogeado == null)

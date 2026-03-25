@@ -11,3 +11,5 @@ public class Usuario
     public int IntentosFallidos { get; set; }
     public bool Bloqueado { get; set; }
 }
+
+
