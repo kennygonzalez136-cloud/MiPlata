@@ -2,47 +2,40 @@
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 
+<HeadContent>
+    <link href="/css/index.css" rel="stylesheet" />
+</HeadContent>
+
+<div class="page-home">
+
 <div class="min-h-screen">
     <NavbarComponent Variant="NavbarVariant.Home" />
     
     <!-- Hero Section -->
-    <section class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 opacity-50"></div>
-        
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+
         <!-- Blobs animados -->
-        <div class="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-        <div class="absolute top-40 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-        
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-purple-200">
-                        <span class="text-sm font-medium text-purple-700">
-                            ✨ Banca Digital para Jóvenes
-                        </span>
-                    </div>
-                    
-                    <h1 class="text-4xl md:text-6xl font-bold">
-                        <span class="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-                            Tu Banco, Tu Estilo
-                        </span>
-                    </h1>
-                    
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed">
-                        Maneja tu dinero de forma fácil, rápida y divertida. 
-                        YouthBank es el banco dkenny ecialmente para ti. 🚀
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <button type="button"  @onclick="IrLogin">Login</button>
-                        <button type="button" @onclick="IrRegister">Register</button>
+        <div class="blob blob-left"></div>
+        <div class="blob blob-right"></div>
+
+        <div class="hero-container">
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <div class="hero-badge">✨ Banca Digital para Jóvenes</div>
+
+                    <h1 class="hero-title">Tu Banco, Tu Estilo</h1>
+
+                    <p class="hero-subtitle">Maneja tu dinero de forma fácil, rápida y divertida. YouthBank es el banco especialmente para ti. 🚀</p>
+
+                    <div class="hero-actions">
+                        <button class="btn-primary" type="button"  @onclick="IrLogin">Iniciar sesión</button>
+                        <button class="btn-secondary" type="button" @onclick="IrRegister">Crear cuenta</button>
                     </div>
                 </div>
-                
-                <div class="relative">
-                    <img src="/images/hero-banking.jpg" 
-                         alt="Joven usando banca digital" 
-                         class="rounded-3xl shadow-2xl" />
+
+                <div class="hero-media">
+                    <img src="/images/hero-banking.jpg" alt="Joven usando banca digital" class="hero-image" />
                 </div>
             </div>
         </div>
@@ -64,6 +57,7 @@
             </div>
         </div>
     </section>
+    </div>
 </div>
 
 @code {

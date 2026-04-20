@@ -3,11 +3,16 @@
 @using MiPlata.Models
 @inject CajeroService cajeroService
 @inject NavigationManager Navigation
+@inject MiPlata.Services.AppState AppState
+
+<HeadContent>
+    <link href="/css/dashboard.css" rel="stylesheet" />
+</HeadContent>
 
 <div class="min-h-screen">
     <NavbarComponent Variant="NavbarVariant.Dashboard" UserName="@userName" OnLogout="HandleLogout" />
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 dashboard-wrapper">
         <!-- Welcome Section -->
         <div class="mb-8">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
@@ -216,8 +221,29 @@
         new Transaction { Icon = "✅", Description = "Reembolso", Amount = 450, Date = DateTime.Now.AddDays(-15), Category = "Ingreso" }
     };
 
+    private bool isAuthorized = false;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (AppState.CurrentUser == null)
+            {
+                // not authorized, redirect to login
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            userName = AppState.CurrentUser.Username ?? "Usuario";
+            isAuthorized = true;
+            StateHasChanged();
+        }
+    }
+
     private void HandleLogout()
     {
+        // clear app state and go to home
+        AppState.Clear();
         Navigation.NavigateTo("/");
     }
 

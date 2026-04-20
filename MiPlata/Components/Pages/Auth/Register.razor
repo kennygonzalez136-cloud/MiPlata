@@ -1,26 +1,42 @@
 ﻿@page "/register"
 @inject CajeroService cajeroService
+@inject NavigationManager Navigation
 @rendermode InteractiveServer
 @using MiPlata.Models
 
+<HeadContent>
+    <link href="/css/register.css" rel="stylesheet" />
+</HeadContent>
 
-<h3>Registro</h3>
+<div class="page-register">
+    <div class="card-register">
+        <h2 class="brand">📝 Crear cuenta</h2>
 
-<input placeholder="Identificación" @bind="user.Identificacion" />
-<input placeholder="Nombre Completo" @bind="user.NombreCompleto" />
-<input placeholder="Celular" @bind="user.Celular" />
-<input placeholder="Usuario" @bind="user.Username" />
-<input type="password" placeholder="Contraseña" @bind="user.Password" />
-<input type="password" placeholder="Confirmar" @bind="confirm" />
+        <div class="grid-form">
+            <input class="input" placeholder="Identificación" @bind="user.Identificacion" />
+            <input class="input" placeholder="Nombre Completo" @bind="user.NombreCompleto" />
+            <input class="input" placeholder="Celular" @bind="user.Celular" />
+            <input class="input" placeholder="Usuario" @bind="user.Username" />
+            <input class="input" type="password" placeholder="Contraseña" @bind="user.Password" />
+            <input class="input" type="password" placeholder="Confirmar" @bind="confirm" />
+        </div>
 
-<button @onclick="Registrar">Registrar</button>
+        <div class="actions">
+            <button class="btn-primary" @onclick="Registrar">Registrar</button>
+            <button class="link-button" @onclick="IrLogin">¿Ya tienes cuenta? Iniciar sesión</button>
+        </div>
 
-<p>@mensaje</p>
+        @if (!string.IsNullOrEmpty(mensaje))
+        {
+            <p class="alert">@mensaje</p>
+        }
+    </div>
+</div>
 
 @code {
     Usuario user = new Usuario();
-    string confirm;
-    string mensaje;
+    string confirm = string.Empty;
+    string mensaje = string.Empty;
 
     void Registrar()
     {
@@ -31,5 +47,10 @@
         }
 
         mensaje = cajeroService.Registrar(user);
+    }
+
+    void IrLogin()
+    {
+        Navigation.NavigateTo("/login");
     }
 }

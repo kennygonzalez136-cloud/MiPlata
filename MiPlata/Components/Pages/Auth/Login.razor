@@ -2,52 +2,48 @@
 @rendermode InteractiveServer
 @using MiPlata.Models
 @inject CajeroService cajeroService
+@inject NavigationManager Navigation
+@inject MiPlata.Services.AppState AppState
 
-<div class="container">
+<HeadContent>
+    <link href="/css/login.css" rel="stylesheet" />
+</HeadContent>
 
-    <div class="login-card">
+<div class="page-login-container">
+    <div class="card-login">
+        <h2 class="brand">💳 YouthBank</h2>
+        <p class="lead">Iniciar sesión</p>
 
-        <h2 class="title">💳 YouthBank</h2>
-        <p class="subtitle">Iniciar Sesión</p>
+        <label class="label">Usuario</label>
+        <input class="input" placeholder="Usuario" @bind="username" />
 
-        <!-- Inputs -->
-        <div class="input-group">
-            <label>Usuario</label>
-            <input placeholder="Usuario" @bind="username" />
-        </div>
+        <label class="label">Contraseña</label>
+        <input class="input" type="password" placeholder="••••••••" @bind="password" />
 
-        <div class="input-group">
-            <label>Contraseña</label>
-            <input type="password" placeholder="••••••••" @bind="password" />
-        </div>
+        <button type="button" class="btn-primary" @onclick="Ingresar">Iniciar sesión</button>
 
-        <!-- Botón -->
-        <button class="btn" @onclick="Ingresar">Ingresar</button>
-
-        <!-- Mensaje -->
         @if (!string.IsNullOrEmpty(mensaje))
         {
-            <p class="message">@mensaje</p>
+            <p class="alert">@mensaje</p>
         }
 
-        <p class="intentos">Intentos restantes: @intentos</p>
+        <p class="info">Intentos restantes: <strong>@intentos</strong></p>
 
-        <!-- Selección de cuenta -->
         @if (mostrarSeleccionCuenta)
         {
-            <div class="cuenta-box">
-                <h4>Selecciona el tipo de cuenta</h4>
-
-                <button class="btn-sec" @onclick='() => CrearCuenta("Ahorros")'>
-                    Ahorros
-                </button>
-
-                <button class="btn-sec" @onclick='() => CrearCuenta("Corriente")'>
-                    Corriente
-                </button>
+            <div class="account-select">
+                <h4>Selecciona tipo de cuenta</h4>
+                <div class="account-actions">
+                    <button class="btn-outline" @onclick='() => CrearCuenta("Ahorros")'>Ahorros</button>
+                    <button class="btn-outline" @onclick='() => CrearCuenta("Corriente")'>Corriente</button>
+                </div>
             </div>
         }
 
+        <div class="switch-area">
+            <span>¿No tienes cuenta?</span>
+            <button class="link-button" @onclick="IrRegister">Crear cuenta</button>
+        </div>
     </div>
 </div>
 
@@ -60,7 +56,7 @@
     private Usuario? usuarioLogeado;
     private bool mostrarSeleccionCuenta = false;
 
-    private void Ingresar()
+    private async Task Ingresar()
     {
         mensaje = "";
         mostrarSeleccionCuenta = false;
@@ -71,18 +67,16 @@
             return;
 
         usuarioLogeado = user;
+        // persist user in app state for the circuit (synchronous)
+        AppState.SetUser(user);
 
-        bool tieneCuenta = cajeroService.TieneCuentas(user.Id);
+        // show welcome message and let state propagate
+        mensaje = $"Bienvenido {user.Username}";
+        StateHasChanged();
 
-        if (!tieneCuenta)
-        {
-            mostrarSeleccionCuenta = true;
-            mensaje = "Debes crear una cuenta";
-        }
-        else
-        {
-            mensaje = $"Bienvenido {user.Username}";
-        }
+        // small delay to ensure UI updates, then navigate
+        await Task.Delay(250);
+        Navigation.NavigateTo("/dashboard");
     }
 
     private void CrearCuenta(string tipo)
@@ -94,5 +88,10 @@
 
         mensaje = resultado;
         mostrarSeleccionCuenta = false;
+    }
+
+    void IrRegister()
+    {
+        Navigation.NavigateTo("/register");
     }
 }

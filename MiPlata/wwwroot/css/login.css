@@ -1,0 +1,44 @@
+/* Login page styles - clearer class names */
+.page-login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 24px;
+}
+
+.card-login {
+  width: 100%;
+  max-width: 460px;
+  background: #fff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+  border: 1px solid rgba(99,102,241,0.06);
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.lead {
+  color: #6b7280;
+  margin-bottom: 14px;
+}
+
+.label { display:block; font-weight:600; margin-top:10px; margin-bottom:6px; color:#374151; }
+.input { width:100%; padding:10px 12px; border:1px solid #e6e6f0; border-radius:8px; outline:none; }
+
+.btn-primary { width:100%; padding:12px; margin-top:12px; background:linear-gradient(90deg,#7c3aed,#06b6d4); color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:700 }
+
+.alert { margin-top:10px; color:#dc2626; }
+.info { margin-top:8px; color:#6b7280 }
+
+.account-select { margin-top:12px; padding:12px; background:#faf8ff; border:1px solid #f3e8ff; border-radius:8px }
+.account-actions { display:flex; gap:8px; margin-top:8px }
+.btn-outline { padding:8px 12px; border-radius:8px; border:1px solid #dcd7ff; background:transparent; cursor:pointer }
+
+.switch-area { margin-top:14px; display:flex; gap:8px; align-items:center; justify-content:center }
+.link-button { background:none; border:none; color:#6366f1; cursor:pointer; text-decoration:underline }

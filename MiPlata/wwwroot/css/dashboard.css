@@ -1,0 +1,11 @@
+/* Styles specific to Dashboard page */
+.dashboard-wrapper { max-width:1200px; margin:0 auto; padding:20px }
+.balance-card { border-radius:14px; padding:20px }
+.quick-action { padding:12px; border-radius:12px; cursor:pointer }
+.transaction-item { padding:12px; border-radius:8px }
+.transfer-modal { background: rgba(0,0,0,0.5) }
+
+/* small responsive */
+@media (max-width:768px) {
+  .dashboard-wrapper { padding:12px }
+}

@@ -6,6 +6,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<CajeroService>();
+builder.Services.AddScoped<MiPlata.Services.AppState>();
 
 var app = builder.Build();
 
